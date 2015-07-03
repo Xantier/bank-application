@@ -5,10 +5,12 @@
    <artifactId>teller-tech-test</artifactId>
    <packaging>war</packaging>
    <version>1.0-SNAPSHOT</version>
-   <name>Bank Teller Techincal Test Application</name>
+   <name>Bank Teller Technical Test Application</name>
    <url>http://maven.apache.org</url>
    <properties>
       <io.spring.platform-version>1.1.2.RELEASE</io.spring.platform-version>
+      <hibernate-version>4.3.8.Final</hibernate-version>
+      <hikari-version>2.3.8</hikari-version>
       <jetty-version>9.3.0.v20150612</jetty-version>
    </properties>
 
@@ -29,6 +31,31 @@
          <groupId>org.springframework</groupId>
          <artifactId>spring-webmvc</artifactId>
       </dependency>
+
+      <!-- Hibernate & Datasource-->
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-core</artifactId>
+         <version>${hibernate-version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-orm</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>com.zaxxer</groupId>
+         <artifactId>HikariCP</artifactId>
+         <version>${hikari-version}</version>
+         <scope>compile</scope>
+      </dependency>
+
+      <!-- DB -->
+      <dependency>
+         <groupId>com.h2database</groupId>
+         <artifactId>h2</artifactId>
+         <version>1.4.187</version>
+      </dependency>
+
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>

@@ -5,10 +5,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 
-import static org.springframework.context.annotation.ComponentScan.Filter;
-
 @Configuration
-@ComponentScan(basePackageClasses = App.class, excludeFilters = @Filter({Controller.class, Configuration.class}))
+@ComponentScan(basePackageClasses = App.class, excludeFilters = @ComponentScan.Filter({Controller.class, Configuration.class}))
 class ApplicationConfig {
 /*
 

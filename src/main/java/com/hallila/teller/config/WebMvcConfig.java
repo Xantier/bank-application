@@ -5,15 +5,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import static org.springframework.context.annotation.ComponentScan.Filter;
-
 
 @Configuration
-@ComponentScan(basePackageClasses = App.class, includeFilters = @Filter(Controller.class), useDefaultFilters = false)
+@EnableWebMvc
+@ComponentScan(basePackageClasses = App.class, includeFilters = @ComponentScan.Filter(Controller.class), useDefaultFilters = false)
 class WebMvcConfig extends WebMvcConfigurationSupport {
 
    private static final String RESOURCES_LOCATION = "/resources/";
