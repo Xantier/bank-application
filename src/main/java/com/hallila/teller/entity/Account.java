@@ -1,9 +1,11 @@
 package com.hallila.teller.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 
 @Entity
 public class Account {
@@ -12,7 +14,15 @@ public class Account {
    @GeneratedValue(strategy= GenerationType.AUTO)
    private long id;
 
+   @Column(nullable = false)
    private String name;
+
+   private String address;
+
+   @Column(nullable = false)
+   private BigDecimal balance = new BigDecimal(0.0);
+
+   private String phoneNumber;
 
    public long getId() {
       return id;
@@ -28,5 +38,29 @@ public class Account {
 
    public void setName(String name) {
       this.name = name;
+   }
+
+   public String getAddress() {
+      return address;
+   }
+
+   public void setAddress(String address) {
+      this.address = address;
+   }
+
+   public BigDecimal getBalance() {
+      return balance;
+   }
+
+   public void setBalance(BigDecimal balance) {
+      this.balance = balance;
+   }
+
+   public String getPhoneNumber() {
+      return phoneNumber;
+   }
+
+   public void setPhoneNumber(String phoneNumber) {
+      this.phoneNumber = phoneNumber;
    }
 }
