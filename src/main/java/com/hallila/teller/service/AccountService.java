@@ -23,8 +23,8 @@ public class AccountService {
    }
 
    @Transactional(readOnly = true)
-   public Account load() {
-      return accountDao.load();
+   public List<Transaction> load() {
+      return accountDao.load(null);
    }
 
    @Transactional

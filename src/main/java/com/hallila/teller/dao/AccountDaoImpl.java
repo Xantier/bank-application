@@ -2,6 +2,7 @@ package com.hallila.teller.dao;
 
 import com.hallila.teller.entity.Account;
 import com.hallila.teller.entity.Transaction;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Repository
 public class AccountDaoImpl implements AccountDao {
@@ -16,14 +18,17 @@ public class AccountDaoImpl implements AccountDao {
    @Autowired
    private SessionFactory sessionFactory;
 
+   @SuppressWarnings("unchecked")
    @Override
-   public Account load() {
-      return (Account) sessionFactory.getCurrentSession().get(Account.class, 1l);
+   public List<Transaction> load(Account account) {
+      Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Transaction.class);
+      return (List<Transaction>) criteria.list();
    }
 
    @Override
    public boolean create(Account account) {
       Serializable id = sessionFactory.getCurrentSession().save(account);
+      System.out.println(account.getId());
       return id != null;
    }
 

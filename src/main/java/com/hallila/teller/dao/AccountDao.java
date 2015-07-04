@@ -4,11 +4,12 @@ import com.hallila.teller.entity.Account;
 import com.hallila.teller.entity.Transaction;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface AccountDao {
-   public Account load();
+   List<Transaction> load(Account account);
 
-   public boolean create(Account account);
+   boolean create(Account account);
 
    BigDecimal transact(Transaction transaction);
 }

@@ -41,7 +41,7 @@ public class PersistenceConfig {
    public DataSource dataSource() {
       HikariConfig config = new HikariConfig();
       config.setDataSourceClassName("org.h2.jdbcx.JdbcDataSource");
-      config.addDataSourceProperty("url", "jdbc:h2:mem:test;MVCC=true");
+      config.addDataSourceProperty("url", "jdbc:h2:mem:test");
       config.setUsername("sa");
       config.setPassword("sa");
       return new HikariDataSource(config);
