@@ -11,9 +11,8 @@ public class AccountService {
    @Autowired
    private AccountDao accountDao;
 
-   public Boolean create(Account account){
-      accountDao.create(account);
-      return true;
+   public Boolean create(Account account) {
+      return accountDao.create(account);
    }
 
 }
