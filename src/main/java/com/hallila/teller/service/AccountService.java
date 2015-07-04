@@ -18,4 +18,7 @@ public class AccountService {
       return accountDao.create(account);
    }
 
+   public Account load() {
+      return accountDao.load();
+   }
 }

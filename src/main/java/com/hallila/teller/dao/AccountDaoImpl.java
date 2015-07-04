@@ -31,7 +31,6 @@ public class AccountDaoImpl implements AccountDao {
    @Override
    public boolean create(Account account) {
       Serializable id = sessionFactory.getCurrentSession().save(account);
-      System.out.println(id);
       return id != null;
    }
 

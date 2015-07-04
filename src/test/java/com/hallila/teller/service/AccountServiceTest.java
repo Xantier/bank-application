@@ -36,5 +36,13 @@ public class AccountServiceTest {
       assertThat(response, is(true));
    }
 
+   @Test
+   public void shouldCallDaoLoadWhenLoadingAccount(){
+      Account expected = new Account();
+      expected.setName("name");
+      when(dao.load()).thenReturn(expected);
+      Account account = accountService.load();
+      assertThat(account.getName(), is(expected.getName()));
+   }
 
 }
