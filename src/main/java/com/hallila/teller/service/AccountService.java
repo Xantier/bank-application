@@ -5,8 +5,8 @@ import com.hallila.teller.entity.Account;
 import com.hallila.teller.entity.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 @Service
@@ -20,11 +20,14 @@ public class AccountService {
       return accountDao.create(account);
    }
 
+   @Transactional(readOnly = true)
    public Account load() {
       return accountDao.load();
    }
 
+   @Transactional
    public BigDecimal lodge(Transaction transaction) {
+      accountDao.transact(transaction);
       Account accountTo = transaction.getAccountTo();
       accountTo.setBalance(accountTo.getBalance().add(transaction.getAmount()));
       return accountTo.getBalance();
