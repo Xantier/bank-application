@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -25,9 +26,10 @@ public class Transaction {
    @Column(nullable = false)
    private BigDecimal amount;
 
+   @ManyToOne
    private Account accountFrom;
 
-   @Column(nullable = false)
+   @ManyToOne(optional = false)
    private Account accountTo;
 
    public long getId() {
