@@ -57,7 +57,7 @@ public class AccountControllerTest extends WebAppConfigurationAware {
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"name\":\"hello\"}"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("success", is(true))); //for now
+            .andExpect(jsonPath("success", is(true)));
    }
 
    @Test
@@ -67,5 +67,15 @@ public class AccountControllerTest extends WebAppConfigurationAware {
             .content("{\"name\":\"hello\"}"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("success", is(false))); //for now
+   }
+
+   @Test
+   public void shouldResponseWithSuccessMsgAndAmountWhenLodging() throws Exception{
+      mockMvc.perform(post("/account/lodge")
+            .param("amount", "1.0")
+            .param("accountId", "1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("success", is(false)))
+            .andExpect(jsonPath("balance", is(1.0)));
    }
 }
