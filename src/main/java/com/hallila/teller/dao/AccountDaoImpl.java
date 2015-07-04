@@ -26,5 +26,9 @@ public class AccountDaoImpl implements AccountDao{
       return (Account) sessionFactory.getCurrentSession().get(Account.class, 1l);
    }
 
+   @Override
+   public boolean create(Account account) {
+      return false;
+   }
 
 }
