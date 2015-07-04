@@ -52,6 +52,7 @@ public class AccountController {
       transaction.setAccountTo(accountTo);
       transaction.setAmount(lodgementAmount);
       transaction.setDate(LocalDate.now());
+      accountService.lodge(transaction);
       HashMap<String, Object> returnable = new HashMap<>();
       returnable.put("success", false);
       returnable.put("balance", amount);

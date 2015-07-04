@@ -27,6 +27,8 @@ public class AccountServiceTest {
    @InjectMocks
    private AccountService accountService = new AccountService();
 
+   private static final BigDecimal LODGEMENT_AMOUNT = BigDecimal.ONE;
+
    @Test
    public void shouldCallDaoWhenCreatingAccount(){
       accountService.create(new Account());
@@ -51,14 +53,32 @@ public class AccountServiceTest {
 
    @Test
    public void shouldBeAbleToLodgeIntoAccount(){
+      Transaction transaction = createTransaction(TransactionType.LODGEMENT);
+      BigDecimal newBalance = accountService.lodge(transaction);
+      assertThat(newBalance, is(LODGEMENT_AMOUNT));
+   }
+
+   @Test
+   public void shouldCallTransactWhenLodging(){
+      Transaction transaction = createTransaction(TransactionType.WIRE_TRANSFER);
+      accountService.lodge(transaction);
+      verify(dao).transact(any());
+   }
+
+   @Test
+   public void shouldCallTransactWhenTranferring(){
+      accountService.transfer(new Transaction());
+      verify(dao).transact(any());
+   }
+
+   private Transaction createTransaction(TransactionType transactionType) {
       Account account = new Account();
       Transaction transaction = new Transaction();
-      transaction.setTransactionType(TransactionType.LODGEMENT);
+      transaction.setTransactionType(transactionType);
       transaction.setAccountTo(account);
-      BigDecimal lodgementAmount = BigDecimal.ONE;
-      transaction.setAmount(lodgementAmount);
-      BigDecimal newBalance = accountService.lodge(transaction);
-      assertThat(lodgementAmount, is(newBalance));
+      transaction.setAmount(LODGEMENT_AMOUNT);
+      return transaction;
    }
+
 
 }

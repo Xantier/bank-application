@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -31,5 +33,11 @@ public class AccountService {
       Account accountTo = transaction.getAccountTo();
       accountTo.setBalance(accountTo.getBalance().add(transaction.getAmount()));
       return accountTo.getBalance();
+   }
+
+   @Transactional
+   public List<Account> transfer(Transaction transaction){
+      accountDao.transact(transaction);
+      return new ArrayList<>();
    }
 }
