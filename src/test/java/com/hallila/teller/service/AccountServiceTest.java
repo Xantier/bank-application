@@ -2,11 +2,15 @@ package com.hallila.teller.service;
 
 import com.hallila.teller.dao.AccountDao;
 import com.hallila.teller.entity.Account;
+import com.hallila.teller.entity.Transaction;
+import com.hallila.teller.entity.TransactionType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -43,6 +47,18 @@ public class AccountServiceTest {
       when(dao.load()).thenReturn(expected);
       Account account = accountService.load();
       assertThat(account.getName(), is(expected.getName()));
+   }
+
+   @Test
+   public void shouldBeAbleToLodgeIntoAccount(){
+      Account account = new Account();
+      Transaction transaction = new Transaction();
+      transaction.setTransactionType(TransactionType.LODGEMENT);
+      transaction.setAccountTo(account);
+      BigDecimal lodgementAmount = BigDecimal.ONE;
+      transaction.setAmount(lodgementAmount);
+      BigDecimal newBalance = accountService.lodge(transaction);
+      assertThat(lodgementAmount, is(newBalance));
    }
 
 }
