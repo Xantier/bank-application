@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 class Header extends React.Component{
 
-  constructor(props, context) {
+  constructor(props) {
     super(props);
   }
 
@@ -24,7 +24,6 @@ class Header extends React.Component{
         </header>
     );
   }
-
 }
 
 Header.contextTypes = {
