@@ -1,11 +1,12 @@
 package com.hallila.teller.service;
 
-import com.hallila.teller.dao.AccountDao;
+import com.hallila.teller.dao.Dao;
 import com.hallila.teller.entity.Account;
 import com.hallila.teller.entity.Transaction;
 import com.hallila.teller.entity.TransactionType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class AccountServiceTest {
 
    @Mock
-   private AccountDao dao;
+   private Dao dao;
 
    @InjectMocks
    private AccountService accountService = new AccountService();
@@ -49,22 +50,19 @@ public class AccountServiceTest {
    }
 
    @Test
-   public void shouldBeAbleToLodgeIntoAccount(){
+   public void shouldCallLodgeWhenLodging(){
       Transaction transaction = createTransaction(TransactionType.LODGEMENT);
-      BigDecimal newBalance = accountService.lodge(transaction);
-      assertThat(newBalance, is(LODGEMENT_AMOUNT));
-   }
-
-   @Test
-   public void shouldCallTransactWhenLodging(){
-      Transaction transaction = createTransaction(TransactionType.WIRE_TRANSFER);
-      accountService.lodge(transaction);
-      verify(dao).transact(any());
+      accountService.lodge(transaction.getAccountTo(), transaction.getAmount());
+      ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
+      verify(dao).lodge(captor.capture());
+      assertThat(captor.getValue().getAccountTo().getId(), is(transaction.getAccountTo().getId()));
+      assertThat(captor.getValue().getAmount(), is(transaction.getAmount()));
    }
 
    @Test
    public void shouldCallTransactWhenTransferring(){
-      accountService.transfer(new Transaction());
+      Transaction transaction = createTransaction(TransactionType.LODGEMENT);
+      accountService.transfer(transaction);
       verify(dao).transact(any());
    }
 

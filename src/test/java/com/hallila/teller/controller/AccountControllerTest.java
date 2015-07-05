@@ -2,7 +2,6 @@ package com.hallila.teller.controller;
 
 import com.hallila.teller.config.WebAppConfigurationAware;
 import com.hallila.teller.entity.Account;
-import com.hallila.teller.entity.Transaction;
 import com.hallila.teller.service.AccountService;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,13 +82,7 @@ public class AccountControllerTest extends WebAppConfigurationAware {
    }
 
    @Test
-   public void shouldCallAccountServiceWithTransaction() throws Exception {
-      Transaction transaction = new Transaction();
-      Account accountTo = new Account();
-      accountTo.setId(1l);
-      transaction.setAccountTo(accountTo);
-      transaction.setAmount(BigDecimal.valueOf(1.0));
-
+   public void shouldCallAccountServiceAccountAndTransactionAmount() throws Exception {
       mockMvc.perform(post("/account/lodge")
             .param("amount", "1.0")
             .param("accountId", "1"))
@@ -97,9 +90,10 @@ public class AccountControllerTest extends WebAppConfigurationAware {
             .andExpect(jsonPath("success", is(false)))
             .andExpect(jsonPath("balance", is(1.0)));
 
-      ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
-      verify(service).lodge(captor.capture());
-      assertThat(captor.getValue().getAccountTo().getId(), is(transaction.getAccountTo().getId()));
-      assertThat(captor.getValue().getAmount(), is(transaction.getAmount()));
+      ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
+      ArgumentCaptor<BigDecimal> bigDecimalCaptor = ArgumentCaptor.forClass(BigDecimal.class);
+      verify(service).lodge(captor.capture(), bigDecimalCaptor.capture());
+      assertThat(captor.getValue().getId(), is(1l));
+      assertThat(bigDecimalCaptor.getValue(), is(BigDecimal.valueOf(1.0)));
    }
 }

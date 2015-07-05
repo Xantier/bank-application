@@ -1,6 +1,6 @@
 package com.hallila.teller.service;
 
-import com.hallila.teller.dao.AccountDao;
+import com.hallila.teller.dao.Dao;
 import com.hallila.teller.entity.Account;
 import com.hallila.teller.entity.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class AccountService {
 
    @Autowired
-   private AccountDao accountDao;
+   private Dao accountDao;
 
    @Transactional
    public Boolean create(Account account) {
@@ -28,11 +29,12 @@ public class AccountService {
    }
 
    @Transactional
-   public BigDecimal lodge(Transaction transaction) {
-      accountDao.transact(transaction);
-      Account accountTo = transaction.getAccountTo();
-      accountTo.setBalance(accountTo.getBalance().add(transaction.getAmount()));
-      return accountTo.getBalance();
+   public BigDecimal lodge(Account account, BigDecimal amount) {
+      Transaction transaction = new Transaction();
+      transaction.setAccountTo(account);
+      transaction.setAmount(amount);
+      transaction.setDate(LocalDate.now());
+      return accountDao.lodge(transaction);
    }
 
    @Transactional

@@ -19,9 +19,9 @@ import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
 public class DaoTest extends WebAppConfigurationAware {
 
    @Autowired
-   private AccountDao dao;
+   private Dao dao;
 
-   protected Account account;
+   private Account account;
 
    @Before
    public void populate() {
@@ -57,12 +57,11 @@ public class DaoTest extends WebAppConfigurationAware {
       from.setName("From");
       from.setAddress("AccountFrom");
       from.setBalance(BigDecimal.TEN);
+      dao.create(from);
 
       Transaction transaction = createTransaction(TransactionType.WIRE_TRANSFER);
       transaction.setAccountFrom(from);
       dao.transact(transaction);
-
-      dao.create(from);
       List<Transaction> transactions = dao.load(from);
       assertThat(transactions.get(0).getAccountFrom().getBalance(), is(BigDecimal.TEN.subtract(BigDecimal.ONE)));
    }
