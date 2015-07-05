@@ -1,7 +1,6 @@
-package com.hallila.teller;
+package com.hallila.teller.dao;
 
 import com.hallila.teller.config.WebAppConfigurationAware;
-import com.hallila.teller.dao.AccountDao;
 import com.hallila.teller.entity.Account;
 import com.hallila.teller.entity.Transaction;
 import com.hallila.teller.entity.TransactionType;
@@ -17,29 +16,55 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
 
-public class AccountDaoTest extends WebAppConfigurationAware {
+public class DaoTest extends WebAppConfigurationAware {
 
    @Autowired
    private AccountDao dao;
-   private Account account;
+
+   protected Account account;
 
    @Before
-   public void populate(){
+   public void populate() {
       Account account = new Account();
-      account.setName("Name");
-      account.setAddress("Address");
+      account.setName("To");
+      account.setAddress("AccountTo");
       account.setBalance(BigDecimal.TEN);
       dao.create(account);
       this.account = account;
-      dao.transact(createTransaction(TransactionType.LODGEMENT));
    }
 
    @Test
    @Transactional
-   public void shouldSaveTransactionToDbWithCorrectAccount(){
+   public void shouldSaveTransactionToDbWithCorrectAccount() {
+      dao.transact(createTransaction(TransactionType.LODGEMENT));
       List<Transaction> transactions = dao.load(account);
       assertThat(transactions.size(), is(not(0)));
       assertThat(transactions.get(0).getAccountTo(), is(account));
+   }
+
+   @Test
+   @Transactional
+   public void shouldUpdateAccountToBalance(){
+      dao.transact(createTransaction(TransactionType.LODGEMENT));
+      List<Transaction> transactions = dao.load(account);
+      assertThat(transactions.get(0).getAccountTo().getBalance(), is(BigDecimal.ONE.add(BigDecimal.TEN)));
+   }
+
+   @Test
+   @Transactional
+   public void shouldUpdateAccountFromBalance(){
+      Account from = new Account();
+      from.setName("From");
+      from.setAddress("AccountFrom");
+      from.setBalance(BigDecimal.TEN);
+
+      Transaction transaction = createTransaction(TransactionType.WIRE_TRANSFER);
+      transaction.setAccountFrom(from);
+      dao.transact(transaction);
+
+      dao.create(from);
+      List<Transaction> transactions = dao.load(from);
+      assertThat(transactions.get(0).getAccountFrom().getBalance(), is(BigDecimal.TEN.subtract(BigDecimal.ONE)));
    }
 
 
@@ -50,6 +75,5 @@ public class AccountDaoTest extends WebAppConfigurationAware {
       transaction.setAmount(BigDecimal.ONE);
       return transaction;
    }
-
 
 }

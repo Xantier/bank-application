@@ -5,6 +5,7 @@ import com.hallila.teller.entity.Transaction;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,10 +22,10 @@ public class AccountDaoImpl implements AccountDao {
    @SuppressWarnings("unchecked")
    @Override
    public List<Transaction> load(Account account) {
-      Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Transaction.class);
+      Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Transaction.class)
+            .add(Restrictions.or(Restrictions.eq("accountTo", account), Restrictions.eq("accountFrom", account)));
       return (List<Transaction>) criteria.list();
    }
-
    @Override
    public boolean create(Account account) {
       Serializable id = sessionFactory.getCurrentSession().save(account);
