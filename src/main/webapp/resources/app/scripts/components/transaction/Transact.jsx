@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 import DropDown from '../common/DropDown.jsx';
 import request from 'superagent';
@@ -29,7 +31,7 @@ class Transact extends React.Component {
   }
 
   _post() {
-    if (this.refs.fromBox.refs.selectBox.getDOMNode().value === this.refs.toBox.refs.selectBox.getDOMNode().value) {
+    if (!this.state.lodge && this.refs.fromBox.refs.selectBox.getDOMNode().value === this.refs.toBox.refs.selectBox.getDOMNode().value) {
       console.log('please don\'t');
       return;
     }

@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 import Input from '../common/Input.jsx';
 import request from 'superagent';

@@ -28,8 +28,10 @@ public class DaoImpl implements Dao {
    @SuppressWarnings("unchecked")
    @Override
    public List<Transaction> load(Account account) {
+      // Intentionally unoptimized with multiple calls
+      Account acc = (Account) getSession().get(Account.class, account.getId());
       Criteria criteria = getSession().createCriteria(Transaction.class)
-            .add(Restrictions.or(Restrictions.eq("accountTo", account), Restrictions.eq("accountFrom", account)));
+            .add(Restrictions.or(Restrictions.eq("accountTo", acc), Restrictions.eq("accountFrom", acc)));
       return (List<Transaction>) criteria.list();
    }
 
@@ -41,6 +43,7 @@ public class DaoImpl implements Dao {
 
    @Override
    public BigDecimal lodge(Transaction transaction) {
+      // Intentionally unoptimized with multiple calls
       BigDecimal transactionAmount = transaction.getAmount();
       getSession().save(transaction);
       Account accountTo = updateAccount(transaction.getAccountTo(), transactionAmount);

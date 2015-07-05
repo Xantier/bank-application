@@ -73,7 +73,7 @@ public class AccountControllerTest extends WebAppConfigurationAware {
       mockMvc.perform(get("/account/load")
             .param("accountId", "1"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("success", is(false))) //for now
+            .andExpect(jsonPath("success", is(true)))
             .andExpect(jsonPath("transactions").isArray());
    }
 
@@ -90,7 +90,7 @@ public class AccountControllerTest extends WebAppConfigurationAware {
             .param("amount", "1.0")
             .param("accountId", "1"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("success", is(false)))
+            .andExpect(jsonPath("success", is(true)))
             .andExpect(jsonPath("balance", is(1)));
    }
 
@@ -101,7 +101,7 @@ public class AccountControllerTest extends WebAppConfigurationAware {
             .param("amount", "1.0")
             .param("accountId", "1"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("success", is(false)))
+            .andExpect(jsonPath("success", is(true)))
             .andExpect(jsonPath("balance", is(1)));
 
       ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
@@ -118,7 +118,7 @@ public class AccountControllerTest extends WebAppConfigurationAware {
             .param("accountFromId", "1")
             .param("accountToId", "2"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("success", is(false)))
+            .andExpect(jsonPath("success", is(true)))
             .andExpect(jsonPath("accounts").isArray());
 
       ArgumentCaptor<Long> fromCaptor = ArgumentCaptor.forClass(Long.class);
@@ -129,5 +129,7 @@ public class AccountControllerTest extends WebAppConfigurationAware {
       assertThat(toCaptor.getValue(), is(2l));
       assertThat(bigDecimalCaptor.getValue(), is(BigDecimal.valueOf(1.0)));
    }
+
+   // Missing tests for failing retrievals etc.
 
 }

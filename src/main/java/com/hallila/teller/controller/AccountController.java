@@ -43,9 +43,10 @@ public class AccountController {
    @RequestMapping(value = "load", method = RequestMethod.GET)
    @ResponseStatus(value = HttpStatus.OK)
    @ResponseBody
-   public Map<String, Object> load(Long accountId) {
+   public Map<String, Object> load(
+         @RequestParam(value = "accountId") Long accountId) {
       List<Transaction> transactions = accountService.load(accountId);
-      HashMap<String, Object> returnable = returnable(false);
+      HashMap<String, Object> returnable = returnable(transactions != null);
       returnable.put("transactions", transactions);
       return returnable;
    }
@@ -54,11 +55,11 @@ public class AccountController {
    @ResponseStatus(value = HttpStatus.OK)
    @ResponseBody
    public Map<String, Object> lodge(
-         @RequestParam(value="amount") Double amount,
-         @RequestParam(value="accountId")Long accountId) {
+         @RequestParam(value = "amount") Double amount,
+         @RequestParam(value = "accountId") Long accountId) {
       BigDecimal lodgementAmount = BigDecimal.valueOf(amount);
       BigDecimal balance = accountService.lodge(accountId, lodgementAmount);
-      HashMap<String, Object> returnable = returnable(balance!=null);
+      HashMap<String, Object> returnable = returnable(balance != null);
       returnable.put("balance", balance);
       return returnable;
    }
@@ -66,9 +67,12 @@ public class AccountController {
    @RequestMapping(value = "transfer", method = RequestMethod.POST)
    @ResponseStatus(value = HttpStatus.OK)
    @ResponseBody
-   public Map<String, Object> transfer(Double amount, Long accountFromId, Long accountToId) {
+   public Map<String, Object> transfer(
+         @RequestParam(value = "amount") Double amount,
+         @RequestParam(value = "accountFromId") Long accountFromId,
+         @RequestParam(value = "accountToId") Long accountToId) {
       List<Account> accounts = accountService.transfer(accountFromId, accountToId, BigDecimal.valueOf(amount));
-      HashMap<String, Object> returnable = returnable(false);
+      HashMap<String, Object> returnable = returnable(accounts != null);
       returnable.put("accounts", accounts);
       return returnable;
    }
