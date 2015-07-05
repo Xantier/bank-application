@@ -8,6 +8,7 @@ class Create extends React.Component {
     super(props);
     this._post = this._post.bind(this);
     this._updateState = this._updateState.bind(this);
+    this.state = {};
   }
 
   _post(e) {
@@ -27,7 +28,7 @@ class Create extends React.Component {
   }
 
   _updateState(e) {
-    let state = this.state || {};
+    let state = this.state;
     state[e.target.name] = e.target.value;
     this.setState(state);
   }
@@ -37,41 +38,41 @@ class Create extends React.Component {
     return (
         <div>
           <h1>Create Account</h1>
-          <formclassName="form-horizontal" onSubmit={this._post}>
+          <form className="form-horizontal" onSubmit={this._post}>
             <fieldset>
 
               <legend>New Account</legend>
 
-              <divclassName="form-group">
-                <labelclassName="col-md-4 control-label" htmlFor="name">Account Holder</label>
-                <divclassName="col-md-4">
+              <div className="form-group">
+                <label className="col-md-4 control-label" htmlFor="name">Account Holder</label>
+                <div className="col-md-4">
                   <Input name="name" type="text" onChange={this._updateState} required={true}/>
                 </div>
               </div>
 
-              <divclassName="form-group">
-                <labelclassName="col-md-4 control-label" htmlFor="address">Address</label>
-                <divclassName="col-md-4">
+              <div className="form-group">
+                <label className="col-md-4 control-label" htmlFor="address">Address</label>
+                <div className="col-md-4">
                   <Input name="address" type="text" onChange={this._updateState} placeholder="123 Main Street"  required={true}/>
                 </div>
               </div>
 
-              <divclassName="form-group">
-                <labelclassName="col-md-4 control-label" htmlFor="phoneNumber">Phone Number</label>
-                <divclassName="col-md-4">
+              <div className="form-group">
+                <label className="col-md-4 control-label" htmlFor="phoneNumber">Phone Number</label>
+                <div className="col-md-4">
                   <Input name="phoneNumber" type="text" onChange={this._updateState} placeholder="(000)-555-1234" required={true}/>
                 </div>
               </div>
 
-              <divclassName="form-group">
-                <labelclassName="col-md-4 control-label" htmlFor="balance">Balance</label>
-                <divclassName="col-md-2">
+              <div className="form-group">
+                <label className="col-md-4 control-label" htmlFor="balance">Balance</label>
+                <div className="col-md-2">
                   <Input name="balance" type="number" onChange={this._updateState} placeholder="0.00" required={true}/>
                 </div>
               </div>
 
-              <divclassName="form-group">
-                <divclassName="col-md-4">
+              <div className="form-group">
+                <div className="col-md-4">
                   <button id="save" name="save"className="btn btn-primary">Save</button>
                 </div>
               </div>

@@ -25,6 +25,7 @@ describe('Create', () => {
 
   it('should contain form with 5 inputs', () => {
     // 5x divs for form fields + legend
-    expect(component.props.children[1].props.children.props.children.length).to.equal(6)
+    expect(component.props.children[1].props.children.props.children.length).to.equal(6);
+    console.log(component.state);
   });
 });

@@ -56,4 +56,8 @@ public class AccountService {
       accountFrom.setId(id);
       return accountFrom;
    }
+
+   public List<Account> loadAll() {
+      return accountDao.loadAll();
+   }
 }

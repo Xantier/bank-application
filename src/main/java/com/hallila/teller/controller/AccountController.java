@@ -32,6 +32,13 @@ public class AccountController {
       return returnable(response);
    }
 
+   @RequestMapping(value = "/loadAll", method = RequestMethod.GET)
+   @ResponseStatus(value = HttpStatus.OK)
+   @ResponseBody
+   public List<Account> loadAll() {
+      return accountService.loadAll();
+   }
+
    @RequestMapping(value = "load", method = RequestMethod.GET)
    @ResponseStatus(value = HttpStatus.OK)
    @ResponseBody
