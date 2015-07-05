@@ -9,6 +9,7 @@ class TransactionList extends React.Component {
     super(props);
     this.componentWillMount = this.componentWillMount.bind(this);
     this._retrieve = this._retrieve.bind(this);
+    this._updateTransactions = this._updateTransactions.bind(this);
     this.state = {};
   }
 
@@ -40,26 +41,56 @@ class TransactionList extends React.Component {
         .set('Accept', 'application/json')
         .end(function (err, res) {
           if (res.ok) {
-            that.setState(getTransactions(res.body));
-            console.log(res.body);
+            that._updateTransactions(res.body.transactions);
           } else {
-            console.log('Unable to save transaction');
+            console.log('Unable to retrieve transactions');
           }
         });
   }
 
-  getTransactions(data) {
-
+  _updateTransactions(data) {
+    this.setState({transactions: data});
   }
 
   render() {
-
+    let transactions;
+    if (this.state.transactions) {
+      transactions = this.state.transactions.map(function (trans) {
+        return (
+            <tr>
+              <td>{trans.date.year}-{trans.date.monthValue}-{trans.date.dayOfMonth}</td>
+              <td>{trans.amount}</td>
+              <td>{trans.transactionType}</td>
+              <td>{trans.accountFrom ? trans.accountFrom.name : ''}</td>
+            </tr>
+        )
+      });
+    }
     return (
-        <div>
-          <h1>List Transactions</h1>
-          <form className="form-horizontal">
-            <DropDown name="Account" ref="listBox" accounts={this.state.accounts} onSelect={this._retrieve}/>
-          </form>
+        <div className="row-fluid">
+          <div className="span9">
+
+            <h1>List Transactions</h1>
+            <form className="form-horizontal">
+              <fieldset>
+                <DropDown name="Account" ref="listBox" accounts={this.state.accounts} onSelect={this._retrieve}/>
+              </fieldset>
+            </form>
+            <h2>Transactions</h2>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th className="col-md-3">Date</th>
+                  <th className="col-md-3">Amount</th>
+                  <th className="col-md-3">Type</th>
+                  <th className="col-md-3">From</th>
+                </tr>
+              </thead>
+              <tbody>
+              {transactions}
+              </tbody>
+            </table>
+          </div>
         </div>
     );
   }

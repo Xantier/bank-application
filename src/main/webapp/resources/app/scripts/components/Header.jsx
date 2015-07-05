@@ -3,7 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-class Header extends React.Component{
+class Header extends React.Component {
 
   constructor(props) {
     super(props);
@@ -12,15 +12,22 @@ class Header extends React.Component{
   render() {
     return (
         <header className="clearfix">
-          <nav className="clearfix">
-            <div className="nav-item">
-              <Link to="create">Create</Link>
+          <nav className="navbar navbar-default">
+            <div className="navbar-header">
+              <a className="navbar-brand" href="#">Teller App</a>
             </div>
-            <div className="nav-item">
-              <Link to="transact">Transfer</Link>
-            </div>
-            <div className="nav-item">
-              <Link to="list">List</Link>
+            <div>
+              <ul className="nav navbar-nav">
+                <li>
+                  <Link to="create">Create</Link>
+                </li>
+                <li>
+                  <Link to="transact">Transfer</Link>
+                </li>
+                <li>
+                  <Link to="list">List</Link>
+                </li>
+              </ul>
             </div>
           </nav>
         </header>

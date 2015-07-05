@@ -26,8 +26,10 @@ class Transact extends React.Component {
 
   _transferOrLodge(e) {
     e.preventDefault();
-    this.setState({lodge: !this.state.lodge});
-    this.updateTexts.call(this);
+    var lodge = !this.state.lodge;
+    this.setState({lodge: lodge});
+    this.setState({header: lodge ? 'Lodge' : 'Transfer'});
+    this.setState({buttonText: lodge ? 'Transfer' : 'Lodge'});
   }
 
   _post() {
@@ -56,11 +58,6 @@ class Transact extends React.Component {
         });
   }
 
-  updateTexts() {
-    this.setState({header: this.state.lodge ? 'Lodge' : 'Transfer'});
-    this.setState({buttonText: this.state.lodge ? 'Transfer' : 'Lodge'});
-  }
-
   componentWillMount() {
     let that = this;
     request.get('/account/loadAll')
@@ -78,43 +75,37 @@ class Transact extends React.Component {
   render() {
 
     return (
-        <div>
-          <h1>{this.state.header}</h1>
+        <div className="row-fluid">
+          <div className="span9">
+            <h1>{this.state.header}</h1>
 
-          <form className="form-horizontal">
-            <fieldset>
-              <div className="form-group">
-                <label className="col-md-4 control-label" htmlFor="transferOrLodge">Transfer/ Lodge? </label>
-                <div className="col-md-4">
-                  <button id="transferOrLodge" name="transferOrLodge" className="btn btn-primary" onClick={this._transferOrLodge}>Switch to {this.state.buttonText}</button>
+            <form className="form-horizontal">
+              <fieldset>
+                <div className="form-group">
+                  <label className="col-md-4 control-label" htmlFor="transferOrLodge">Transfer/ Lodge? </label>
+                  <div className="col-md-4">
+                    <button id="transferOrLodge" name="transferOrLodge" className="btn btn-primary" onClick={this._transferOrLodge}>Switch to {this.state.buttonText}</button>
+                  </div>
                 </div>
-              </div>
 
-            </fieldset>
-          </form>
             { !this.state.lodge ? <DropDown name="From" ref="fromBox" accounts={this.state.accounts} /> : null }
-          <DropDown name="To" ref="toBox" accounts={this.state.accounts} />
-          <form className="form-horizontal">
-            <fieldset>
-
-              <legend>Form Name</legend>
-
-              <div className="form-group">
-                <label className="col-md-4 control-label" for="amount">Amount</label>
-                <div className="col-md-4">
-                  <Input name="amount" type="number" onChange={this._updateState} placeholder="0.00" required={true}/>
+                <DropDown name="To" ref="toBox" accounts={this.state.accounts} />
+                <div className="form-group">
+                  <label className="col-md-4 control-label" for="amount">Amount</label>
+                  <div className="col-md-4">
+                    <Input name="amount" type="number" onChange={this._updateState} placeholder="0.00" required={true}/>
+                  </div>
                 </div>
-              </div>
 
-            </fieldset>
-          </form>
+                <div className="form-group">
+                  <div className="col-md-4">
+                    <button id="save" name="save"className="btn btn-primary" onClick={this._post} >{this.state.header}</button>
+                  </div>
+                </div>
 
-          <div className="form-group">
-            <div className="col-md-4">
-              <button id="save" name="save"className="btn btn-primary" onClick={this._post} >{this.state.header}</button>
-            </div>
+              </fieldset>
+            </form>
           </div>
-
         </div>
     );
   }

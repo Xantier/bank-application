@@ -15,19 +15,20 @@ class DropDown extends React.Component {
       });
     }
     return (
-        <form>
+        <div  className="col-md-4">
           <label htmlFor="this.props.name">{this.props.name.toUpperCase()}</label>
-          <select ref="selectBox" name={this.props.name} class="form-control" onChange={this.props.onSelect.bind(null, this)}>
+          <select ref="selectBox" name={this.props.name} className="form-control" onChange={this.props.onSelect ? this.props.onSelect.bind(null, this) : null}>
             {options}
           </select>
-        </form>
+        </div>
     );
   }
 }
 
 DropDown.propTypes = {
   accounts: React.PropTypes.array.isRequired,
-  name: React.PropTypes.string.isRequired
+  name: React.PropTypes.string.isRequired,
+  onSelect: React.PropTypes.func
 };
 
 export default DropDown;

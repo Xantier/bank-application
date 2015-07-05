@@ -3,6 +3,7 @@ package com.hallila.teller.service;
 import com.hallila.teller.dao.Dao;
 import com.hallila.teller.entity.Account;
 import com.hallila.teller.entity.Transaction;
+import com.hallila.teller.entity.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class AccountService {
    public BigDecimal lodge(Long accountId, BigDecimal amount) {
       Account accountTo = account(accountId);
       Transaction transaction = transaction(amount, accountTo);
+      transaction.setTransactionType(TransactionType.LODGEMENT);
       return accountDao.lodge(transaction);
    }
 
@@ -40,6 +42,7 @@ public class AccountService {
       Account accountTo = account(accountToId);
       Transaction transaction = transaction(amount, accountTo);
       transaction.setAccountFrom(accountFrom);
+      transaction.setTransactionType(TransactionType.WIRE_TRANSFER);
       return accountDao.transact(transaction);
    }
 
