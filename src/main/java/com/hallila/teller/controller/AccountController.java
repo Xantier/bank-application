@@ -58,7 +58,7 @@ public class AccountController {
          @RequestParam(value="accountId")Long accountId) {
       BigDecimal lodgementAmount = BigDecimal.valueOf(amount);
       BigDecimal balance = accountService.lodge(accountId, lodgementAmount);
-      HashMap<String, Object> returnable = returnable(false);
+      HashMap<String, Object> returnable = returnable(balance!=null);
       returnable.put("balance", balance);
       return returnable;
    }

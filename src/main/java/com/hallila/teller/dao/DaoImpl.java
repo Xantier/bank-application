@@ -67,7 +67,7 @@ public class DaoImpl implements Dao {
 
    private Account updateAccount(Account accountTo, BigDecimal transactionAmount) {
       Session session = getSession();
-      Account loadedAccount = (Account) session.load(Account.class, accountTo.getId());
+      Account loadedAccount = (Account) session.get(Account.class, accountTo.getId());
       loadedAccount.setBalance(loadedAccount.getBalance().add(transactionAmount));
       session.save(loadedAccount);
       return loadedAccount;

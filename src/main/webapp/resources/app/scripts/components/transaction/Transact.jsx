@@ -29,8 +29,11 @@ class Transact extends React.Component {
   }
 
   _post() {
+    if (this.refs.fromBox.refs.selectBox.getDOMNode().value === this.refs.toBox.refs.selectBox.getDOMNode().value) {
+      console.log('please don\'t');
+      return;
+    }
     const url = this.state.lodge ? '/account/lodge' : '/account/transfer';
-    let that = this;
     var data = {amount: this.state.amount};
     if (this.state.lodge) {
       data.accountId = this.refs.toBox.refs.selectBox.getDOMNode().value;
@@ -44,7 +47,7 @@ class Transact extends React.Component {
         .set('Accept', 'application/json')
         .end(function (err, res) {
           if (res.ok) {
-            that.setState({amount: ''});
+            console.log(res.body);
           } else {
             console.log('Unable to save transaction');
           }
