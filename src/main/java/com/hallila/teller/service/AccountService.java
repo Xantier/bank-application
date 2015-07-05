@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,8 +40,7 @@ public class AccountService {
       Account accountTo = account(accountToId);
       Transaction transaction = transaction(amount, accountTo);
       transaction.setAccountFrom(accountFrom);
-      accountDao.transact(transaction);
-      return new ArrayList<>();
+      return accountDao.transact(transaction);
    }
 
    private Transaction transaction(BigDecimal amount, Account accountTo) {

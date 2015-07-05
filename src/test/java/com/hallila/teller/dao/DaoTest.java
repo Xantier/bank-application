@@ -36,7 +36,7 @@ public class DaoTest extends WebAppConfigurationAware {
    @Test
    @Transactional
    public void shouldSaveTransactionToDbWithCorrectAccount() {
-      dao.transact(createTransaction(TransactionType.LODGEMENT));
+      dao.lodge(createTransaction(TransactionType.LODGEMENT));
       List<Transaction> transactions = dao.load(account);
       assertThat(transactions.size(), is(not(0)));
       assertThat(transactions.get(0).getAccountTo(), is(account));
@@ -45,7 +45,7 @@ public class DaoTest extends WebAppConfigurationAware {
    @Test
    @Transactional
    public void shouldUpdateAccountToBalance(){
-      dao.transact(createTransaction(TransactionType.LODGEMENT));
+      dao.lodge(createTransaction(TransactionType.LODGEMENT));
       List<Transaction> transactions = dao.load(account);
       assertThat(transactions.get(0).getAccountTo().getBalance(), is(BigDecimal.ONE.add(BigDecimal.TEN)));
    }

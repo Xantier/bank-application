@@ -8,9 +8,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -46,15 +48,15 @@ public class DaoImpl implements Dao {
    }
 
    @Override
-   public BigDecimal transact(Transaction transaction) {
-      // Intentionally unoptimized
+   public List<Account> transact(Transaction transaction) {
+      Assert.notNull(transaction.getAccountFrom());
+      // Intentionally unoptimized with multiple calls
       BigDecimal transactionAmount = transaction.getAmount();
       getSession().save(transaction);
-      Account accountTo = updateAccount(transaction.getAccountTo(), transactionAmount);
-      if (transaction.getAccountFrom() != null) {
-         updateAccount(transaction.getAccountFrom(), transactionAmount.negate());
-      }
-      return accountTo.getBalance();
+      List<Account> returnable = new ArrayList<>();
+      returnable.add(updateAccount(transaction.getAccountTo(), transactionAmount));
+      returnable.add(updateAccount(transaction.getAccountFrom(), transactionAmount.negate()));
+      return returnable;
    }
 
    private Account updateAccount(Account accountTo, BigDecimal transactionAmount) {

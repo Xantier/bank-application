@@ -13,5 +13,5 @@ public interface Dao {
 
    BigDecimal lodge(Transaction transaction);
 
-   BigDecimal transact(Transaction transaction);
+   List<Account> transact(Transaction transaction);
 }
