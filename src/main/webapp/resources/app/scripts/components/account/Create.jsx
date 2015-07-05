@@ -20,7 +20,7 @@ class Create extends React.Component {
         .set('Accept', 'application/json')
         .end(function (err, res) {
           if (res.ok) {
-            alert('yay got ' + JSON.stringify(res.body));
+            console.log(res.body);
           } else {
             alert('Oh no! error ' + res.text);
           }

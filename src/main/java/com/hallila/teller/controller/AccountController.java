@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -52,11 +53,13 @@ public class AccountController {
    @RequestMapping(value = "lodge", method = RequestMethod.POST)
    @ResponseStatus(value = HttpStatus.OK)
    @ResponseBody
-   public Map<String, Object> lodge(Double amount, Long accountId) {
+   public Map<String, Object> lodge(
+         @RequestParam(value="amount") Double amount,
+         @RequestParam(value="accountId")Long accountId) {
       BigDecimal lodgementAmount = BigDecimal.valueOf(amount);
-      accountService.lodge(accountId, lodgementAmount);
+      BigDecimal balance = accountService.lodge(accountId, lodgementAmount);
       HashMap<String, Object> returnable = returnable(false);
-      returnable.put("balance", amount);
+      returnable.put("balance", balance);
       return returnable;
    }
 

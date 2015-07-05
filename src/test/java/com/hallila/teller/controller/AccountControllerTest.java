@@ -85,22 +85,24 @@ public class AccountControllerTest extends WebAppConfigurationAware {
 
    @Test
    public void shouldResponseWithSuccessMsgAndAmountWhenLodging() throws Exception {
+      when(service.lodge(any(), any())).thenReturn(BigDecimal.ONE);
       mockMvc.perform(post("/account/lodge")
             .param("amount", "1.0")
             .param("accountId", "1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("success", is(false)))
-            .andExpect(jsonPath("balance", is(1.0)));
+            .andExpect(jsonPath("balance", is(1)));
    }
 
    @Test
    public void shouldCallAccountServiceAccountAndTransactionAmount() throws Exception {
+      when(service.lodge(any(), any())).thenReturn(BigDecimal.ONE);
       mockMvc.perform(post("/account/lodge")
             .param("amount", "1.0")
             .param("accountId", "1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("success", is(false)))
-            .andExpect(jsonPath("balance", is(1.0)));
+            .andExpect(jsonPath("balance", is(1)));
 
       ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
       ArgumentCaptor<BigDecimal> bigDecimalCaptor = ArgumentCaptor.forClass(BigDecimal.class);

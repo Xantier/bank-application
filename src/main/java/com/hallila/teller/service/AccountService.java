@@ -43,6 +43,11 @@ public class AccountService {
       return accountDao.transact(transaction);
    }
 
+   @Transactional(readOnly = true)
+   public List<Account> loadAll() {
+      return accountDao.loadAll();
+   }
+
    private Transaction transaction(BigDecimal amount, Account accountTo) {
       Transaction transaction = new Transaction();
       transaction.setAmount(amount);
@@ -57,7 +62,4 @@ public class AccountService {
       return accountFrom;
    }
 
-   public List<Account> loadAll() {
-      return accountDao.loadAll();
-   }
 }
