@@ -29,17 +29,33 @@ public class AccountService {
    }
 
    @Transactional
-   public BigDecimal lodge(Account account, BigDecimal amount) {
-      Transaction transaction = new Transaction();
-      transaction.setAccountTo(account);
-      transaction.setAmount(amount);
-      transaction.setDate(LocalDate.now());
+   public BigDecimal lodge(Long accountId, BigDecimal amount) {
+      Account accountTo = account(accountId);
+      Transaction transaction = transaction(amount, accountTo);
       return accountDao.lodge(transaction);
    }
 
    @Transactional
-   public List<Account> transfer(Transaction transaction){
+   public List<Account> transfer(Long accountFromId, Long accountToId, BigDecimal amount) {
+      Account accountFrom = account(accountFromId);
+      Account accountTo = account(accountToId);
+      Transaction transaction = transaction(amount, accountTo);
+      transaction.setAccountFrom(accountFrom);
       accountDao.transact(transaction);
       return new ArrayList<>();
+   }
+
+   private Transaction transaction(BigDecimal amount, Account accountTo) {
+      Transaction transaction = new Transaction();
+      transaction.setAmount(amount);
+      transaction.setDate(LocalDate.now());
+      transaction.setAccountTo(accountTo);
+      return transaction;
+   }
+
+   private Account account(Long accountFromId) {
+      Account accountFrom = new Account();
+      accountFrom.setId(accountFromId);
+      return accountFrom;
    }
 }

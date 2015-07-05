@@ -52,7 +52,7 @@ public class AccountServiceTest {
    @Test
    public void shouldCallLodgeWhenLodging(){
       Transaction transaction = createTransaction(TransactionType.LODGEMENT);
-      accountService.lodge(transaction.getAccountTo(), transaction.getAmount());
+      accountService.lodge(transaction.getAccountTo().getId(), transaction.getAmount());
       ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
       verify(dao).lodge(captor.capture());
       assertThat(captor.getValue().getAccountTo().getId(), is(transaction.getAccountTo().getId()));
@@ -62,7 +62,7 @@ public class AccountServiceTest {
    @Test
    public void shouldCallTransactWhenTransferring(){
       Transaction transaction = createTransaction(TransactionType.LODGEMENT);
-      accountService.transfer(transaction);
+      accountService.transfer(1l, 2l, LODGEMENT_AMOUNT);
       verify(dao).transact(any());
    }
 

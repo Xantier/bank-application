@@ -44,9 +44,18 @@ public class AccountController {
    @ResponseBody
    public Map<String, Object> lodge(Double amount, Long accountId){
       BigDecimal lodgementAmount = BigDecimal.valueOf(amount);
-      Account accountTo = new Account();
-      accountTo.setId(accountId);
-      accountService.lodge(accountTo, lodgementAmount);
+      accountService.lodge(accountId, lodgementAmount);
+      HashMap<String, Object> returnable = new HashMap<>();
+      returnable.put("success", false);
+      returnable.put("balance", amount);
+      return returnable;
+   }
+
+   @RequestMapping(value = "transfer", method = RequestMethod.POST)
+   @ResponseStatus(value = HttpStatus.OK)
+   @ResponseBody
+   public Map<String, Object> transfer(Double amount, Long accountFromId, Long accountToId){
+      accountService.transfer(accountFromId, accountToId, BigDecimal.valueOf(amount));
       HashMap<String, Object> returnable = new HashMap<>();
       returnable.put("success", false);
       returnable.put("balance", amount);

@@ -90,10 +90,31 @@ public class AccountControllerTest extends WebAppConfigurationAware {
             .andExpect(jsonPath("success", is(false)))
             .andExpect(jsonPath("balance", is(1.0)));
 
-      ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
+      ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
       ArgumentCaptor<BigDecimal> bigDecimalCaptor = ArgumentCaptor.forClass(BigDecimal.class);
       verify(service).lodge(captor.capture(), bigDecimalCaptor.capture());
-      assertThat(captor.getValue().getId(), is(1l));
+      assertThat(captor.getValue(), is(1l));
       assertThat(bigDecimalCaptor.getValue(), is(BigDecimal.valueOf(1.0)));
    }
+
+
+   @Test
+   public void shouldCallServiceTransferWithCorrectParams () throws Exception {
+      mockMvc.perform(post("/account/transfer")
+            .param("amount", "1.0")
+            .param("accountFromId", "1")
+            .param("accountToId", "2"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("success", is(false)))
+            .andExpect(jsonPath("balance", is(1.0)));
+
+      ArgumentCaptor<Long> fromCaptor = ArgumentCaptor.forClass(Long.class);
+      ArgumentCaptor<Long> toCaptor = ArgumentCaptor.forClass(Long.class);
+      ArgumentCaptor<BigDecimal> bigDecimalCaptor = ArgumentCaptor.forClass(BigDecimal.class);
+      verify(service).transfer(fromCaptor.capture(), toCaptor.capture(), bigDecimalCaptor.capture());
+      assertThat(fromCaptor.getValue(), is(1l));
+      assertThat(toCaptor.getValue(), is(2l));
+      assertThat(bigDecimalCaptor.getValue(), is(BigDecimal.valueOf(1.0)));
+   }
+
 }
