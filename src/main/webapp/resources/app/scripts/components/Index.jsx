@@ -1,14 +1,20 @@
 import React from 'react';
+import { RouteHandler } from 'react-router';
+import Header from './Header.jsx'
 
-let Index = React.createClass({
+class Index extends React.Component {
+
   render() {
-
     return (
-      <div>
-        <h1>Hello World</h1>
-      </div>
+        <div>
+          <Header />
+          <div className="content">
+            <RouteHandler/>
+          </div>
+        </div>
     );
   }
-});
+
+}
 
 export default Index;

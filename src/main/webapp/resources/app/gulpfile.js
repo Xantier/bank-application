@@ -19,7 +19,7 @@ var gulp = require('gulp'),
     postcss = require('gulp-postcss'),
     reload = browserSync.reload,
     p = {
-      jsx: './scripts/app.jsx',
+      main: './scripts/app.js',
       scss: 'styles/main.scss',
       bundle: 'app.js',
       distJs: 'dist/js',
@@ -39,7 +39,7 @@ gulp.task('browserSync', function() {
 });
 
 gulp.task('watchify', function() {
-  var bundler = watchify(browserify(p.jsx, watchify.args));
+  var bundler = watchify(browserify(p.main, watchify.args));
 
   function rebundle() {
     return bundler
@@ -56,7 +56,7 @@ gulp.task('watchify', function() {
 });
 
 gulp.task('browserify', function() {
-  browserify(p.jsx)
+  browserify(p.main)
     .transform(babelify)
     .bundle()
     .pipe(source(p.bundle))
@@ -96,8 +96,4 @@ gulp.task('watch', ['clean'], function() {
 gulp.task('build', ['clean'], function() {
   process.env.NODE_ENV = 'production';
   gulp.start(['browserify', 'styles']);
-});
-
-gulp.task('default', function() {
-  gulp.run('build');
 });
