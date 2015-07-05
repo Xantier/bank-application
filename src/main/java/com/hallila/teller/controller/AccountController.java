@@ -1,6 +1,7 @@
 package com.hallila.teller.controller;
 
 import com.hallila.teller.entity.Account;
+import com.hallila.teller.entity.Transaction;
 import com.hallila.teller.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,26 +29,26 @@ public class AccountController {
    @ResponseBody
    public Map<String, Object> createAccount(@RequestBody Account account) {
       Boolean response = accountService.create(account);
-      HashMap<String, Object> returnable = new HashMap<>();
-      returnable.put("success", response);
-      return returnable;
+      return returnable(response);
    }
 
    @RequestMapping(value = "load", method = RequestMethod.GET)
    @ResponseStatus(value = HttpStatus.OK)
    @ResponseBody
-   public String load() {
-      return "";
+   public Map<String, Object> load(Long accountId) {
+      List<Transaction> transactions = accountService.load(accountId);
+      HashMap<String, Object> returnable = returnable(false);
+      returnable.put("transactions", transactions);
+      return returnable;
    }
 
    @RequestMapping(value = "lodge", method = RequestMethod.POST)
    @ResponseStatus(value = HttpStatus.OK)
    @ResponseBody
-   public Map<String, Object> lodge(Double amount, Long accountId){
+   public Map<String, Object> lodge(Double amount, Long accountId) {
       BigDecimal lodgementAmount = BigDecimal.valueOf(amount);
       accountService.lodge(accountId, lodgementAmount);
-      HashMap<String, Object> returnable = new HashMap<>();
-      returnable.put("success", false);
+      HashMap<String, Object> returnable = returnable(false);
       returnable.put("balance", amount);
       return returnable;
    }
@@ -54,13 +56,17 @@ public class AccountController {
    @RequestMapping(value = "transfer", method = RequestMethod.POST)
    @ResponseStatus(value = HttpStatus.OK)
    @ResponseBody
-   public Map<String, Object> transfer(Double amount, Long accountFromId, Long accountToId){
-      accountService.transfer(accountFromId, accountToId, BigDecimal.valueOf(amount));
-      HashMap<String, Object> returnable = new HashMap<>();
-      returnable.put("success", false);
-      returnable.put("balance", amount);
+   public Map<String, Object> transfer(Double amount, Long accountFromId, Long accountToId) {
+      List<Account> accounts = accountService.transfer(accountFromId, accountToId, BigDecimal.valueOf(amount));
+      HashMap<String, Object> returnable = returnable(false);
+      returnable.put("accounts", accounts);
       return returnable;
    }
 
+   private HashMap<String, Object> returnable(boolean success) {
+      HashMap<String, Object> returnable = new HashMap<>();
+      returnable.put("success", success);
+      return returnable;
+   }
 
 }

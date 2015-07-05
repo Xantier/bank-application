@@ -24,8 +24,8 @@ public class AccountService {
    }
 
    @Transactional(readOnly = true)
-   public List<Transaction> load() {
-      return accountDao.load(null);
+   public List<Transaction> load(Long accountId) {
+      return accountDao.load(account(accountId));
    }
 
    @Transactional
@@ -53,9 +53,9 @@ public class AccountService {
       return transaction;
    }
 
-   private Account account(Long accountFromId) {
+   private Account account(Long id) {
       Account accountFrom = new Account();
-      accountFrom.setId(accountFromId);
+      accountFrom.setId(id);
       return accountFrom;
    }
 }
