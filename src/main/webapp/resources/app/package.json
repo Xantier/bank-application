@@ -3,19 +3,6 @@
   "version": "1.0.0",
   "description": "Teller tech test frontend app. Based on react-starterify",
   "main": "app.js",
-  "keywords": [
-    "gulp",
-    "react",
-    "browserify",
-    "seed",
-    "boilerplate",
-    "kickstarter",
-    "ES6",
-    "6to5",
-    "babel",
-    "mocha",
-    "chai"
-  ],
   "scripts": {
     "test": "mocha --reporter nyan --compilers js:babel/register --recursive"
   },
@@ -44,6 +31,7 @@
     "gulp-uglify": "^1.2.0",
     "mocha": "^2.2.5",
     "react-tools": "^0.13.3",
+    "sinon": "^1.15.4",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.2"

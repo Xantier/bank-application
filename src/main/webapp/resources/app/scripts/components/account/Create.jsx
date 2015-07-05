@@ -1,15 +1,29 @@
 import React from 'react';
 import Input from '../common/Input.jsx';
+import request from 'superagent';
 
 class Create extends React.Component {
 
   constructor(props) {
     super(props);
+    this._post = this._post.bind(this);
+    this._updateState = this._updateState.bind(this);
   }
 
   _post(e) {
     e.preventDefault();
-    console.log(this.state);
+    const data = this.state;
+    request
+        .post('/account/create')
+        .send(data)
+        .set('Accept', 'application/json')
+        .end(function (err, res) {
+          if (res.ok) {
+            alert('yay got ' + JSON.stringify(res.body));
+          } else {
+            alert('Oh no! error ' + res.text);
+          }
+        });
   }
 
   _updateState(e) {
@@ -23,42 +37,42 @@ class Create extends React.Component {
     return (
         <div>
           <h1>Create Account</h1>
-          <form class="form-horizontal" onSubmit={this._post}>
+          <formclassName="form-horizontal" onSubmit={this._post}>
             <fieldset>
 
               <legend>New Account</legend>
 
-              <div class="form-group">
-                <label class="col-md-4 control-label" for="name">Account Holder</label>
-                <div class="col-md-4">
+              <divclassName="form-group">
+                <labelclassName="col-md-4 control-label" htmlFor="name">Account Holder</label>
+                <divclassName="col-md-4">
                   <Input name="name" type="text" onChange={this._updateState} required={true}/>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label class="col-md-4 control-label" for="address">Address</label>
-                <div class="col-md-4">
+              <divclassName="form-group">
+                <labelclassName="col-md-4 control-label" htmlFor="address">Address</label>
+                <divclassName="col-md-4">
                   <Input name="address" type="text" onChange={this._updateState} placeholder="123 Main Street"  required={true}/>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label class="col-md-4 control-label" for="phoneNumber">Phone Number</label>
-                <div class="col-md-4">
+              <divclassName="form-group">
+                <labelclassName="col-md-4 control-label" htmlFor="phoneNumber">Phone Number</label>
+                <divclassName="col-md-4">
                   <Input name="phoneNumber" type="text" onChange={this._updateState} placeholder="(000)-555-1234" required={true}/>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label class="col-md-4 control-label" for="balance">Balance</label>
-                <div class="col-md-2">
+              <divclassName="form-group">
+                <labelclassName="col-md-4 control-label" htmlFor="balance">Balance</label>
+                <divclassName="col-md-2">
                   <Input name="balance" type="number" onChange={this._updateState} placeholder="0.00" required={true}/>
                 </div>
               </div>
 
-              <div class="form-group">
-                <div class="col-md-4">
-                  <button id="save" name="save" class="btn btn-primary">Save</button>
+              <divclassName="form-group">
+                <divclassName="col-md-4">
+                  <button id="save" name="save"className="btn btn-primary">Save</button>
                 </div>
               </div>
 
