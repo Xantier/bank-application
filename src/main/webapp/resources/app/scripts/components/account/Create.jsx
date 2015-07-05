@@ -56,7 +56,7 @@ class Create extends React.Component {
                 <div className="form-group">
                   <label className="col-md-4 control-label" htmlFor="address">Address</label>
                   <div className="col-md-4">
-                    <Input name="address" type="text" onChange={this._updateState} placeholder="123 Main Street"  required={true}/>
+                    <Input name="address" type="text" onChange={this._updateState} placeholder="123 Main Street" required={true}/>
                   </div>
                 </div>
 

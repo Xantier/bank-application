@@ -15,7 +15,7 @@ class DropDown extends React.Component {
       });
     }
     return (
-        <div  className="col-md-4">
+        <div className="col-md-4">
           <label htmlFor="this.props.name">{this.props.name.toUpperCase()}</label>
           <select ref="selectBox" name={this.props.name} className="form-control" onChange={this.props.onSelect ? this.props.onSelect.bind(null, this) : null}>
             {options}

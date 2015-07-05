@@ -26,7 +26,7 @@ class Transact extends React.Component {
 
   _transferOrLodge(e) {
     e.preventDefault();
-    var lodge = !this.state.lodge;
+    let lodge = !this.state.lodge;
     this.setState({lodge: lodge});
     this.setState({header: lodge ? 'Lodge' : 'Transfer'});
     this.setState({buttonText: lodge ? 'Transfer' : 'Lodge'});
@@ -38,7 +38,7 @@ class Transact extends React.Component {
       return;
     }
     const url = this.state.lodge ? '/account/lodge' : '/account/transfer';
-    var data = {amount: this.state.amount};
+    let data = {amount: this.state.amount};
     if (this.state.lodge) {
       data.accountId = this.refs.toBox.refs.selectBox.getDOMNode().value;
     } else {

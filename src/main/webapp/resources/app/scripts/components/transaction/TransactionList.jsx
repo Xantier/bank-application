@@ -23,7 +23,7 @@ class TransactionList extends React.Component {
             // hide personal info etc.
             that.setState({accounts: res.body});
             if (res.body.length) {
-              that._retrieve(res.body[0].id)
+              that._retrieve(res.body[0].id);
             }
           } else {
             console.log('Unable to Retrieve Accounts');
@@ -63,7 +63,7 @@ class TransactionList extends React.Component {
               <td>{trans.transactionType}</td>
               <td>{trans.accountFrom ? trans.accountFrom.name : ''}</td>
             </tr>
-        )
+        );
       });
     }
     return (

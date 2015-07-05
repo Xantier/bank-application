@@ -24,4 +24,4 @@ Input.propTypes = {
   onChange: React.PropTypes.func
 };
 
-export default Input
+export default Input;
