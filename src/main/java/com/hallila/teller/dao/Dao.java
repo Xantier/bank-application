@@ -9,6 +9,8 @@ import java.util.List;
 public interface Dao {
    List<Transaction> load(Account account);
 
+   Account loadAccountById(Long id);
+
    boolean create(Account account);
 
    BigDecimal lodge(Transaction transaction);

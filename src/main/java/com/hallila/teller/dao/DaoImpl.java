@@ -18,62 +18,67 @@ import java.util.List;
 @Repository
 public class DaoImpl implements Dao {
 
-   @Autowired
-   private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
-   private Session getSession() {
-      return sessionFactory.getCurrentSession();
-   }
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
 
-   @SuppressWarnings("unchecked")
-   @Override
-   public List<Transaction> load(Account account) {
-      // Intentionally unoptimized with multiple calls
-      Account acc = (Account) getSession().get(Account.class, account.getId());
-      Criteria criteria = getSession().createCriteria(Transaction.class)
-            .add(Restrictions.or(Restrictions.eq("accountTo", acc), Restrictions.eq("accountFrom", acc)));
-      return (List<Transaction>) criteria.list();
-   }
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Transaction> load(Account account) {
+        // Intentionally unoptimized with multiple calls
+        Account acc = (Account) getSession().get(Account.class, account.getId());
+        Criteria criteria = getSession().createCriteria(Transaction.class)
+              .add(Restrictions.or(Restrictions.eq("accountTo", acc), Restrictions.eq("accountFrom", acc)));
+        return (List<Transaction>) criteria.list();
+    }
 
-   @Override
-   public boolean create(Account account) {
-      Serializable id = getSession().save(account);
-      return id != null;
-   }
+    @Override
+    public Account loadAccountById(Long id) {
+        return (Account) getSession().get(Account.class, id);
+    }
 
-   @Override
-   public BigDecimal lodge(Transaction transaction) {
-      // Intentionally unoptimized with multiple calls
-      BigDecimal transactionAmount = transaction.getAmount();
-      getSession().save(transaction);
-      Account accountTo = updateAccount(transaction.getAccountTo(), transactionAmount);
-      return accountTo.getBalance();
-   }
+    @Override
+    public boolean create(Account account) {
+        Serializable id = getSession().save(account);
+        return id != null;
+    }
 
-   @Override
-   public List<Account> transact(Transaction transaction) {
-      Assert.notNull(transaction.getAccountFrom());
-      // Intentionally unoptimized with multiple calls
-      BigDecimal transactionAmount = transaction.getAmount();
-      getSession().save(transaction);
-      List<Account> returnable = new ArrayList<>();
-      returnable.add(updateAccount(transaction.getAccountTo(), transactionAmount));
-      returnable.add(updateAccount(transaction.getAccountFrom(), transactionAmount.negate()));
-      return returnable;
-   }
+    @Override
+    public BigDecimal lodge(Transaction transaction) {
+        // Intentionally unoptimized with multiple calls
+        BigDecimal transactionAmount = transaction.getAmount();
+        getSession().save(transaction);
+        Account accountTo = updateAccount(transaction.getAccountTo(), transactionAmount);
+        return accountTo.getBalance();
+    }
 
-   @SuppressWarnings("unchecked")
-   @Override
-   public List<Account> loadAll() {
-      return (List<Account>) getSession().createCriteria(Account.class).list();
-   }
+    @Override
+    public List<Account> transact(Transaction transaction) {
+        Assert.notNull(transaction.getAccountFrom());
+        // Intentionally unoptimized with multiple calls
+        BigDecimal transactionAmount = transaction.getAmount();
+        getSession().save(transaction);
+        List<Account> returnable = new ArrayList<>();
+        returnable.add(updateAccount(transaction.getAccountTo(), transactionAmount));
+        returnable.add(updateAccount(transaction.getAccountFrom(), transactionAmount.negate()));
+        return returnable;
+    }
 
-   private Account updateAccount(Account accountTo, BigDecimal transactionAmount) {
-      Session session = getSession();
-      Account loadedAccount = (Account) session.get(Account.class, accountTo.getId());
-      loadedAccount.setBalance(loadedAccount.getBalance().add(transactionAmount));
-      session.save(loadedAccount);
-      return loadedAccount;
-   }
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Account> loadAll() {
+        return (List<Account>) getSession().createCriteria(Account.class).list();
+    }
+
+    private Account updateAccount(Account accountTo, BigDecimal transactionAmount) {
+        Session session = getSession();
+        Account loadedAccount = (Account) session.get(Account.class, accountTo.getId());
+        loadedAccount.setBalance(loadedAccount.getBalance().add(transactionAmount));
+        session.save(loadedAccount);
+        return loadedAccount;
+    }
 
 }

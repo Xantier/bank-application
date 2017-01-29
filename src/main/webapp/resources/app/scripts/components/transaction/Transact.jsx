@@ -47,7 +47,6 @@ class Transact extends React.Component {
     }
     request.post(url)
         .send(data)
-        .set('Content-Type', 'application/x-www-form-urlencoded')
         .set('Accept', 'application/json')
         .end(function (err, res) {
           if (res.ok) {

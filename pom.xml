@@ -55,6 +55,11 @@
          <artifactId>h2</artifactId>
          <version>1.4.187</version>
       </dependency>
+      <dependency>
+         <groupId>org.postgresql</groupId>
+         <artifactId>postgresql</artifactId>
+         <version>9.4.1212</version>
+      </dependency>
 
 
       <!-- Testing -->
@@ -99,7 +104,16 @@
          <groupId>com.fasterxml.jackson.core</groupId>
          <artifactId>jackson-databind</artifactId>
       </dependency>
+       <dependency>
+           <groupId>org.codehaus.jackson</groupId>
+           <artifactId>jackson-core-asl</artifactId>
+       </dependency>
 
+       <dependency>
+           <groupId>org.codehaus.jackson</groupId>
+           <artifactId>jackson-mapper-asl</artifactId>
+           <version>1.8.5</version>
+       </dependency>
    </dependencies>
 
    <build>
